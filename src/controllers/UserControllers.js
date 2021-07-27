@@ -27,7 +27,7 @@ module.exports = {
             const User = Mongoose.model('users', UserSchema, 'users');
             const GetUser = await User.findById(id).exec()
             return res.json({
-                'response': GetUser
+                'response': GetUser !== null ? GetUser : "User not found"
             })
         }
         catch (error) {
@@ -57,9 +57,9 @@ module.exports = {
         try {
             console.log(id)
             const User = Mongoose.model('users', UserSchema, 'users');
-            const UpdateUser = await User.findByIdAndDelete(id).exec();
+            const DeleteUser = await User.findByIdAndDelete(id).exec();
             return res.json({
-                'response': UpdateUser
+                'response': DeleteUser !== null ? DeleteUser : "User not found"
             })
         }
         catch (error) {
