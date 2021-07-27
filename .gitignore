@@ -1,6 +1,7 @@
 #Files
 package-lock.json
 .env
+path.md
 
 #Folders
 node_modules
