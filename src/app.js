@@ -14,5 +14,7 @@ app.use((req, res, next) => {
 app.use(require('./routes'));
 
 app.listen(port, () => {
+    const { StartUp } = require('./models/Startup')
+    StartUp();
     console.log(`Server is running in ${port}`)
 })
