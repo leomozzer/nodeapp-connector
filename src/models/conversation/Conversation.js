@@ -1,10 +1,12 @@
 const { ConversationSchema } = require('./ConversationSchema');
 const { Mongoose } = require('../../models/Mongo');
 
+//Start Models
+const ConversationModel = Mongoose.model('conversation', ConversationSchema, 'conversation');
+
 module.exports = {
     async CreateConversation(provider, data) {
         try {
-            const Conversation = Mongoose.model('conversation', ConversationSchema, 'conversation');
             const NewConversation = provider === "Telegram" ? Conversation(
                 {
                     'name': data['chat']['first_name'],
@@ -13,7 +15,10 @@ module.exports = {
                         'date': Date.now()
                     }],
                     'user_id': data['chat']['id'],
-                    'date': Date.now()
+                    'date': Date.now(),
+                    'lastMessageTime': Date.now(),
+                    'provider': provider,
+                    'active': true
                 }) : Conversation(
                     {
                         'name': 'String',
@@ -30,7 +35,6 @@ module.exports = {
     },
     async GetConversation(provider, data) {
         try {
-            const ConversationModel = Mongoose.model('conversation', ConversationSchema, 'conversation');
             const Conversation = provider === "Telegram" ? await ConversationModel.findOne({ 'user_id': data['chat']['id'] }) : await ConversationModel.findOne({ 'user_id': 'sample' })
             console.log(Conversation)
             return Conversation;
@@ -42,17 +46,19 @@ module.exports = {
     },
     async UpdateConversation(provider, data, message) {
         try {
-            const ConversationModel = Mongoose.model('conversation', ConversationSchema, 'conversation');
             const Conversation = provider === "Telegram" ? await ConversationModel.findOneAndUpdate({ 'user_id': data['chat']['id'] }, {
                 'messages': [{
                     'message': data['text'],
                     'date': Date.now()
-                }, ...message]
+                }, ...message],
+                'lastMessageTime': Date.now(),
+                'active': true
             }) : await ConversationModel.findOneAndUpdate({ 'user_id': 'sample' }, {
                 'messages': [{
                     'message': data['text'],
                     'date': Date.now()
-                }, ...message]
+                }, ...message],
+                'lastMessageTime': Date.now()
             })
             return Conversation;
         }
@@ -60,6 +66,18 @@ module.exports = {
             console.log(error)
             return 'error'
         }
+    },
+    async ListConversation() {
+        const ConversationList = await ConversationModel.find({}).lean().exec();
+        return ConversationList;
+    },
+    async ListActiveConversation() {
+        const ActiveConversationList = await ConversationModel.find({ 'active': true }).exec();
+        return ActiveConversationList;
+    },
+    async ArchiveConversation(id) {
+        const Conversation = await ConversationModel.findByIdAndUpdate(id, { 'active': false })
+        return Conversation;
     }
 }
 

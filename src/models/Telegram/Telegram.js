@@ -16,13 +16,11 @@ module.exports = {
         try {
             const BotModel = Mongoose.model('TelegramBots', TelegramBotSchema, 'TelegramBots')
             const BotList = await BotModel.find({}).lean().exec()
-            console.log(BotList)
             if (BotList === null) {
                 console.log("No bot was found");
             }
             else {
                 BotList.forEach(bot => {
-                    console.log(bot)
                     const CurrentBot = new TelegramBot(bot['token'], { 'polling': true });
                     CurrentBot.on('message', async (msg) => {
                         console.log(msg)
