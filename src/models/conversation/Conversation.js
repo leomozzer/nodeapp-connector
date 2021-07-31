@@ -7,25 +7,32 @@ const ConversationModel = Mongoose.model('conversation', ConversationSchema, 'co
 module.exports = {
     async CreateConversation(provider, data) {
         try {
-            const NewConversation = provider === "Telegram" ? Conversation(
-                {
-                    'name': data['chat']['first_name'],
-                    'messages': [{
-                        'message': data['text'],
-                        'date': Date.now()
-                    }],
-                    'user_id': data['chat']['id'],
-                    'date': Date.now(),
-                    'lastMessageTime': Date.now(),
-                    'provider': provider,
-                    'active': true
-                }) : Conversation(
-                    {
-                        'name': 'String',
-                        'messages': 'Array',
-                        'user_id': 'String',
-                        'date': 'String'
-                    })
+            let NewConversation = undefined;
+            switch (provider) {
+                case "Telegram":
+                    NewConversation = ConversationModel(
+                        {
+                            'name': data['chat']['first_name'],
+                            'messages': [{
+                                'origin': 'user',
+                                'message': data['text'],
+                                'date': Date.now()
+                            }, {
+                                'origin': 'bot',
+                                'message': 'bot message',
+                                'date': Date.now()
+                            }],
+                            'user_id': data['chat']['id'],
+                            'date': Date.now(),
+                            'lastMessageTime': Date.now(),
+                            'provider': provider,
+                            'active': true
+                        }
+                    )
+                    break;
+                default:
+                    break;
+            }
             return NewConversation.save();
         }
         catch (error) {
@@ -49,15 +56,15 @@ module.exports = {
             switch (provider) {
                 case "Telegram":
                     await ConversationModel.findOneAndUpdate({ 'user_id': data['chat']['id'] }, {
-                        'messages': [{
+                        'messages': [...message, {
                             'origin': 'user',
                             'message': data['text'],
-                            'date': Date.now(),
+                            'date': Date.now()
                         }, {
                             'origin': 'bot',
                             'message': 'bot message',
-                            'date': Date.now(),
-                        }, ...message],
+                            'date': Date.now()
+                        }],
                         'lastMessageTime': Date.now(),
                         'active': true
                     });
