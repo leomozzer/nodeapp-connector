@@ -5,7 +5,7 @@ const { Mongoose } = require('../../models/Mongo');
 const ConversationModel = Mongoose.model('conversation', ConversationSchema, 'conversation');
 
 module.exports = {
-    async CreateConversation(provider, data) {
+    async CreateConversation(provider, data, botResponse = undefined) {
         try {
             let NewConversation = undefined;
             switch (provider) {
@@ -17,7 +17,7 @@ module.exports = {
                                 'origin': 'user',
                                 'message': data['text'],
                                 'date': Date.now()
-                            }, {
+                            }, botResponse !== undefined ? botResponse : {
                                 'origin': 'bot',
                                 'message': 'bot message',
                                 'date': Date.now()
@@ -51,7 +51,7 @@ module.exports = {
             return 'error'
         }
     },
-    async UpdateConversation(provider, data, message) {
+    async UpdateConversation(provider, data, message, botResponse = undefined) {
         try {
             switch (provider) {
                 case "Telegram":
@@ -60,7 +60,7 @@ module.exports = {
                             'origin': 'user',
                             'message': data['text'],
                             'date': Date.now()
-                        }, {
+                        }, botResponse !== undefined ? botResponse : {
                             'origin': 'bot',
                             'message': 'bot message',
                             'date': Date.now()
