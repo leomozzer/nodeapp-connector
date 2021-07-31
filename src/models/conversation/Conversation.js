@@ -46,21 +46,26 @@ module.exports = {
     },
     async UpdateConversation(provider, data, message) {
         try {
-            const Conversation = provider === "Telegram" ? await ConversationModel.findOneAndUpdate({ 'user_id': data['chat']['id'] }, {
-                'messages': [{
-                    'message': data['text'],
-                    'date': Date.now()
-                }, ...message],
-                'lastMessageTime': Date.now(),
-                'active': true
-            }) : await ConversationModel.findOneAndUpdate({ 'user_id': 'sample' }, {
-                'messages': [{
-                    'message': data['text'],
-                    'date': Date.now()
-                }, ...message],
-                'lastMessageTime': Date.now()
-            })
-            return Conversation;
+            switch (provider) {
+                case "Telegram":
+                    await ConversationModel.findOneAndUpdate({ 'user_id': data['chat']['id'] }, {
+                        'messages': [{
+                            'origin': 'user',
+                            'message': data['text'],
+                            'date': Date.now(),
+                        }, {
+                            'origin': 'bot',
+                            'message': 'bot message',
+                            'date': Date.now(),
+                        }, ...message],
+                        'lastMessageTime': Date.now(),
+                        'active': true
+                    });
+                    break;
+                default:
+                    console.log("Provider missing")
+                    break;
+            }
         }
         catch (error) {
             console.log(error)
