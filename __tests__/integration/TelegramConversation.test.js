@@ -1,4 +1,4 @@
-const { CreateConversation, UpdateConversation, GetConversation, ArchiveConversation } = require('../../src/models/conversation/Conversation')
+const { CreateConversation, UpdateConversation, GetConversation, ArchiveConversation, DeleteConversationById } = require('../../src/models/conversation/Conversation')
 
 const provider = "Telegram";
 
@@ -39,5 +39,9 @@ describe('Conversation', () => {
     it('Archive Conversation', async () => {
         const ArchiveTestConversation = await ArchiveConversation(conversation_id)
         console.log(ArchiveTestConversation)
+    })
+    it('Delete Conversation', async () => {
+        const DeleteTestConversation = await DeleteConversationById(conversation_id)
+        console.log(DeleteTestConversation)
     })
 })

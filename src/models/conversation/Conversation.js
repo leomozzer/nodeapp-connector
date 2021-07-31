@@ -90,6 +90,10 @@ module.exports = {
     async ArchiveConversation(id) {
         const Conversation = await ConversationModel.findByIdAndUpdate(id, { 'active': false })
         return Conversation;
+    },
+    async DeleteConversationById(id) {
+        const Conversation = await ConversationModel.findByIdAndDelete(id)
+        return Conversation;
     }
 }
 
