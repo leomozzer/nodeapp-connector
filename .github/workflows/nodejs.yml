@@ -12,7 +12,7 @@ on:
 jobs:
   build:
 
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
       MONGO_USER: editor
       MONGO_PWD: passord
