@@ -1,8 +1,6 @@
 # nodeapp-connector
 
 This project is to train/improve in some features as:
-* Node
-* NPM
 * TDD
 * GitHub Actions
 * MongoDB
@@ -10,6 +8,9 @@ This project is to train/improve in some features as:
 * Terraform
 
 ## NodeJs App
+- [x] MongoDB
+- [x] TDD
+- [ ] Socket.IO
 
 * dev
 ```
