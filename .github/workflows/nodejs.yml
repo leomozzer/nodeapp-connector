@@ -35,8 +35,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     
-    - name: Change dir
-      run: cd app
     - name: Install dependencies
       run: npm install
       
