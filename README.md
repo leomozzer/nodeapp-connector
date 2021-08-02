@@ -28,3 +28,6 @@ npm run test
 //or 
 yarn test
 ```
+
+### GitHub Actions
+There is an action for this project that will run the TDD from this project, and it'll run only if the changes are performed in the folder "app".
