@@ -44,4 +44,8 @@ describe('Conversation', () => {
         const DeleteTestConversation = await DeleteConversationById(conversation_id)
         console.log(DeleteTestConversation)
     })
+    afterAll(() => {
+        console.log("Done")
+        process.exit()
+    })
 })
