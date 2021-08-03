@@ -4,10 +4,19 @@ const conversationSchema = new Mongoose.Schema(
         'name': String,
         'messages': Array,
         'user_id': String,
-        'date': String,
-        'lastMessageTime': String,
+        'date': {
+            'type': String,
+            'default': Date.now
+        },
+        'lastMessageTime': {
+            'type': String,
+            'default': Date.now
+        },
         'provider': String,
-        'active': Boolean
+        'active': {
+            'type': Boolean,
+            'default': true
+        }
     },
     {
         'collection': 'conversation', timestamps: true

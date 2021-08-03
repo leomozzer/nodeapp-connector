@@ -23,10 +23,7 @@ module.exports = {
                                 'date': Date.now()
                             }],
                             'user_id': data['chat']['id'],
-                            'date': Date.now(),
-                            'lastMessageTime': Date.now(),
-                            'provider': provider,
-                            'active': true
+                            'provider': provider
                         }
                     )
                     break;

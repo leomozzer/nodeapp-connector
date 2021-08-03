@@ -4,13 +4,6 @@ const { Mongoose } = require('../Mongo');
 
 const TelegramBotSchema = require('./TelegramSchema');
 
-class TelegramBotClass {
-    constructor(token) {
-        this.bot = new TelegramBot(token, { 'polling': true });
-        return this.bot;
-    }
-}
-
 module.exports = {
     async StartTelegramBot() {
         try {
@@ -21,7 +14,7 @@ module.exports = {
             }
             else {
                 BotList.forEach(bot => {
-                    const CurrentBot = new TelegramBot(bot['token'], { 'polling': true });
+                    const CurrentBot = new TelegramBot(bot['token'], { ...bot['config'] });
                     CurrentBot.on('message', async (msg) => {
                         console.log(msg)
                         const Conversation = await GetConversation("Telegram", msg);
