@@ -7,7 +7,7 @@ on:
   push:
     branches: [ main ]
     paths:
-    - 'app/**'
+    - 'backend/**'
   pull_request:
     branches: [ main ]
 
@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: app
+        working-directory: backend
     env:
       MONGO_USER: editor
       MONGO_PWD: passord
